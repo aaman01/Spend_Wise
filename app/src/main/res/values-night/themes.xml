@@ -3,8 +3,10 @@
     <style name="Base.Theme.LifeSaver" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/splash_background</item>
         <item name="colorPrimaryDark">@color/splash_background</item>
+        <item name="colorControlActivated">@color/green</item>
     </style>
     <style name="Theme.LifeSaver.noaction" parent="Theme.Material3.DayNight.NoActionBar" >
         <item name="colorPrimaryDark">@color/light_blue</item>
+        <item name="colorPrimary">@color/green</item>
     </style>
 </resources>
