@@ -2,8 +2,12 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.LifeSaver" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/splash_background</item>
+        <item name="colorPrimaryDark">@color/splash_background</item>
+        <item name="colorAccent">@color/light_blue</item>
     </style>
 
-    <style name="Theme.LifeSaver" parent="Base.Theme.LifeSaver" />
+    <style name="Theme.LifeSaver.noaction" parent="Theme.Material3.DayNight.NoActionBar" >
+        <item name="colorPrimaryDark">@color/light_blue</item>
+    </style>
 </resources>
