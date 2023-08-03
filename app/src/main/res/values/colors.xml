@@ -3,5 +3,11 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="light_blue">#5CBEDE</color>
+    <color name="lightish_blue">#84938A</color>
     <color name="splash_background">#26515F</color>
+    <color name="green">#008000</color>
+    <color name="red">#FF0000</color>
+<!--//84938A-->
+<!--    008000-->
+<!--    6B7D74-->
 </resources>

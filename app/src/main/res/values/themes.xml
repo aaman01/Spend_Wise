@@ -5,9 +5,17 @@
         <item name="colorPrimary">@color/splash_background</item>
         <item name="colorPrimaryDark">@color/splash_background</item>
         <item name="colorAccent">@color/light_blue</item>
+        <item name="colorControlActivated">@color/green</item>
     </style>
 
     <style name="Theme.LifeSaver.noaction" parent="Theme.Material3.DayNight.NoActionBar" >
         <item name="colorPrimaryDark">@color/light_blue</item>
+        <item name="colorPrimary">@color/green</item>
+    </style>
+    <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bottom_sheet_bg</item>
+    </style>
+    <style name="BottomDialogTheme" parent="Theme.Design.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
     </style>
 </resources>
