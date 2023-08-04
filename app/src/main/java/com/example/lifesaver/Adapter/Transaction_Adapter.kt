@@ -1,18 +1,27 @@
 package com.example.lifesaver.Adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.lifesaver.R
 import com.example.lifesaver.Database.data.transaction
 
-class Transaction_Adapter(private var transactions:List<transaction>):
+import com.example.lifesaver.ViewModel.MainViewModel
+import com.example.lifesaver.shared_viewmodel
+
+
+
+class Transaction_Adapter(
+    private var transactions: List<transaction>,
+    mainViewModel: MainViewModel,
+    private val shared_viewmodel:shared_viewmodel
+):
     RecyclerView.Adapter<Transaction_Adapter.ViewHolder>() {
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view=LayoutInflater.from(parent.context).inflate(R.layout.transactions,parent,false)
@@ -35,13 +44,20 @@ class Transaction_Adapter(private var transactions:List<transaction>):
             holder.amount.setTextColor(ContextCompat.getColor(context,R.color.red))
         }
         holder.label.text=transact.label
+         holder.layout.setOnClickListener {
+             shared_viewmodel.setBooleanValue(true)
+             shared_viewmodel.id=transact.id
+             }
 
 
     }
 
+
+
     class ViewHolder(itemView: View):RecyclerView.ViewHolder(itemView) {
           val label :TextView=itemView.findViewById(R.id.label)
           val amount: TextView=itemView.findViewById(R.id.amount)
+         val layout:LinearLayout=itemView.findViewById(R.id.ll)
 
 
     }
