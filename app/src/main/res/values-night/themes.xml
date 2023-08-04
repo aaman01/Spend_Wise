@@ -8,5 +8,6 @@
     <style name="Theme.LifeSaver.noaction" parent="Theme.Material3.DayNight.NoActionBar" >
         <item name="colorPrimaryDark">@color/light_blue</item>
         <item name="colorPrimary">@color/green</item>
+        <item name="colorButtonNormal">@color/red</item>
     </style>
 </resources>

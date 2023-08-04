@@ -22,4 +22,7 @@ interface TransactionDao {
 
     @Update
     suspend fun update( vararg transaction: transaction)
+
+    @Query("DELETE FROM transaction_table")
+    suspend fun deleteAll()
 }

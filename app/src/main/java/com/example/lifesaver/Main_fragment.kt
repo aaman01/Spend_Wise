@@ -1,16 +1,25 @@
 package com.example.lifesaver
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.os.Handler
+import android.text.Editable
+import android.text.SpannableStringBuilder
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.PopupWindow
+import android.widget.TextView
+import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.lifesaver.Adapter.Transaction_Adapter
 import com.example.lifesaver.Database.AppDatabase
@@ -22,6 +31,8 @@ import com.example.lifesaver.databinding.FragmentMainFragmentBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class Main_fragment : Fragment() {
@@ -32,6 +43,7 @@ class Main_fragment : Fragment() {
     private lateinit var adapter: Transaction_Adapter
     private lateinit var dialog:BottomSheetDialog
    private  lateinit var t:transaction
+    private val sharedViewModel: shared_viewmodel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,12 +61,44 @@ class Main_fragment : Fragment() {
                 recyclerset(transactions)
             }
         )
+        sharedViewModel.booleanLiveData.observe(viewLifecycleOwner, Observer {
+            if (it){
+                update_delete_transaction()
+            }
+        })
+        binding.searchIcon.setOnClickListener {
+            Toast.makeText(requireContext(),"Coming Soon",Toast.LENGTH_SHORT).show()
+        }
+     binding.more.setOnClickListener {
+        val window=PopupWindow(requireContext())
+         val view=layoutInflater.inflate(R.layout.pop_up_layout,null)
+         window.contentView=view
+        val clearallbtn= view.findViewById<TextView>(R.id.clearall)
+         val charts= view.findViewById<TextView>(R.id.charts)
+         val settings= view.findViewById<TextView>(R.id.setting)
+         clearallbtn.setOnClickListener {
+             Deleteall()
+             window.dismiss()
+         }
+         charts.setOnClickListener {
+             Toast.makeText(requireContext(),"Coming Soon",Toast.LENGTH_SHORT).show()
+             window.dismiss()
+         }
+         settings.setOnClickListener {
+             Toast.makeText(requireContext(),"Coming Soon",Toast.LENGTH_SHORT).show()
+             window.dismiss()
+         }
+         window.showAsDropDown(binding.more)
 
+     }
 
         binding.addBtn.setOnClickListener {
             entertransaction()
         }
     }
+
+
+
 
     private fun initalize() {
         val spenddb=AppDatabase.getDatabase(requireContext())
@@ -66,7 +110,7 @@ class Main_fragment : Fragment() {
 
     }
     private fun recyclerset(transactions: List<transaction>) {
-        adapter= Transaction_Adapter(transactions)
+        adapter= Transaction_Adapter(transactions,mainViewModel,sharedViewModel)
         binding.recyclerview.adapter=adapter
         adapter.notifyDataSetChanged()
         binding.recyclerview.layoutManager=LinearLayoutManager(context)
@@ -135,6 +179,52 @@ class Main_fragment : Fragment() {
        binding.balance.text="₹ %.2f".format(totalamount)
        binding.budget.text="₹ %.2f".format(budget)
         binding.expense.text="₹ %.2f".format(expense)
+    }
+
+    private fun Deleteall() {
+       val dialog=AlertDialog.Builder(requireContext())
+           .setTitle("Are you sure ?")
+           .setPositiveButton("Yes"){dialog,_->
+               lifecycleScope.launch(Dispatchers.Main) {
+                   AppDatabase.getDatabase(requireContext()).transactiondao().deleteAll()
+               }
+               dialog.dismiss()
+               }
+           .setNegativeButton("Cancel"){dialog,_->
+               dialog.dismiss()
+           }.create()
+        dialog.show()
+    }
+
+    private fun update_delete_transaction() {
+        val dialogview=layoutInflater.inflate(R.layout.bottom_sheet_edit,null)
+        dialog=BottomSheetDialog(requireContext(),R.style.BottomDialogTheme)
+        dialog.setContentView(dialogview)
+
+        dialog.show()
+        val t = transactions.filter{ it.id==sharedViewModel.id}
+        Log.d("hello","1")
+//        dialogview.findViewById<ImageView>(R.id.closeBtn).setOnClickListener {
+//            val delayMillis = 200
+//            Handler().postDelayed({
+//                dialog.dismiss()
+//            }, delayMillis.toLong())
+//
+//        }
+//        val l=dialogview.findViewById<TextInputEditText>(R.id.labelInput)
+//        val a=dialogview.findViewById<TextInputEditText>(R.id.amountInput)
+//        val d=dialogview.findViewById<TextInputEditText>(R.id.descriptionInput)
+//
+//        val editableText: Editable = SpannableStringBuilder(t[0].label)
+//        l.text=editableText
+//        val editableText1: Editable = SpannableStringBuilder(t[0].amount.toString())
+//        a.text=editableText1
+//        val editableText2: Editable = SpannableStringBuilder(t[0].description)
+//        d.text=editableText2
+
+
+
+
     }
 
     override fun onDestroyView() {
