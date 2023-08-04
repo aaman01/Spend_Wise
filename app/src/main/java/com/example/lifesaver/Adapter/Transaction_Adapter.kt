@@ -9,9 +9,9 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.lifesaver.R
-import com.example.lifesaver.data.transaction
+import com.example.lifesaver.Database.data.transaction
 
-class Transaction_Adapter(private val transactions:ArrayList<transaction>):
+class Transaction_Adapter(private var transactions:List<transaction>):
     RecyclerView.Adapter<Transaction_Adapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -36,11 +36,13 @@ class Transaction_Adapter(private val transactions:ArrayList<transaction>):
         }
         holder.label.text=transact.label
 
+
     }
 
     class ViewHolder(itemView: View):RecyclerView.ViewHolder(itemView) {
           val label :TextView=itemView.findViewById(R.id.label)
           val amount: TextView=itemView.findViewById(R.id.amount)
+
 
     }
 

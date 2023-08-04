@@ -21,6 +21,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        finish()
+        moveTaskToBack(true)
     }
 }
