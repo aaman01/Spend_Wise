@@ -45,8 +45,8 @@ class Transaction_Adapter(
         }
         holder.label.text=transact.label
          holder.layout.setOnClickListener {
-             shared_viewmodel.setBooleanValue(true)
              shared_viewmodel.id=transact.id
+             shared_viewmodel.setBooleanValue(true)
              }
 
 

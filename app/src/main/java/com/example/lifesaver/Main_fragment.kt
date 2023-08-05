@@ -1,6 +1,8 @@
 package com.example.lifesaver
 
 import android.app.AlertDialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.text.Editable
@@ -8,6 +10,7 @@ import android.text.SpannableStringBuilder
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -17,6 +20,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -73,6 +77,8 @@ class Main_fragment : Fragment() {
         val window=PopupWindow(requireContext())
          val view=layoutInflater.inflate(R.layout.pop_up_layout,null)
          window.contentView=view
+         window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+         window.isFocusable = true
         val clearallbtn= view.findViewById<TextView>(R.id.clearall)
          val charts= view.findViewById<TextView>(R.id.charts)
          val settings= view.findViewById<TextView>(R.id.setting)
@@ -89,6 +95,15 @@ class Main_fragment : Fragment() {
              window.dismiss()
          }
          window.showAsDropDown(binding.more)
+         view.setOnTouchListener { _, event ->
+             if (event.action == MotionEvent.ACTION_OUTSIDE) {
+                 window.dismiss()
+                 true
+             } else {
+                 false
+             }
+         }
+
 
      }
 
@@ -185,9 +200,7 @@ class Main_fragment : Fragment() {
        val dialog=AlertDialog.Builder(requireContext())
            .setTitle("Are you sure ?")
            .setPositiveButton("Yes"){dialog,_->
-               lifecycleScope.launch(Dispatchers.Main) {
-                   AppDatabase.getDatabase(requireContext()).transactiondao().deleteAll()
-               }
+               mainViewModel.deleteall()
                dialog.dismiss()
                }
            .setNegativeButton("Cancel"){dialog,_->
@@ -202,25 +215,38 @@ class Main_fragment : Fragment() {
         dialog.setContentView(dialogview)
 
         dialog.show()
-        val t = transactions.filter{ it.id==sharedViewModel.id}
-        Log.d("hello","1")
-//        dialogview.findViewById<ImageView>(R.id.closeBtn).setOnClickListener {
-//            val delayMillis = 200
-//            Handler().postDelayed({
-//                dialog.dismiss()
-//            }, delayMillis.toLong())
-//
-//        }
-//        val l=dialogview.findViewById<TextInputEditText>(R.id.labelInput)
-//        val a=dialogview.findViewById<TextInputEditText>(R.id.amountInput)
-//        val d=dialogview.findViewById<TextInputEditText>(R.id.descriptionInput)
-//
-//        val editableText: Editable = SpannableStringBuilder(t[0].label)
-//        l.text=editableText
-//        val editableText1: Editable = SpannableStringBuilder(t[0].amount.toString())
-//        a.text=editableText1
-//        val editableText2: Editable = SpannableStringBuilder(t[0].description)
-//        d.text=editableText2
+        var t = transactions.filter{ it.id==sharedViewModel.id}
+        Log.d("hello",t[0].label)
+        dialogview.findViewById<ImageView>(R.id.closeBtn).setOnClickListener {
+            val delayMillis = 200
+            Handler().postDelayed({
+                dialog.dismiss()
+            }, delayMillis.toLong())
+
+        }
+        val l=dialogview.findViewById<TextInputEditText>(R.id.labelInput)
+        val a=dialogview.findViewById<TextInputEditText>(R.id.amountInput)
+        val d=dialogview.findViewById<TextInputEditText>(R.id.descriptionInput)
+
+        val editableText: Editable = SpannableStringBuilder(t[0].label)
+        l.text=editableText
+        val editableText1: Editable = SpannableStringBuilder(t[0].amount.toString())
+        a.text=editableText1
+        val editableText2: Editable = SpannableStringBuilder(t[0].description)
+        d.text=editableText2
+
+        dialogview.findViewById<Button>(R.id.deletedbtn).setOnClickListener {
+            mainViewModel.delete(t[0])
+            dialog.dismiss()
+        }
+
+        dialogview.findViewById<Button>(R.id.addTransactionBtn).setOnClickListener{
+            t[0].amount= a.text.toString().toDoubleOrNull()!!
+            t[0].label=l.text.toString()
+            t[0].description=d.text.toString()
+            mainViewModel.update(t[0])
+            dialog.dismiss()
+        }
 
 
 
