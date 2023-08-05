@@ -14,31 +14,27 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(private val repository: Repository):ViewModel() {
 
-
-//    fun getmoviee(page:String){
-//        viewModelScope.launch(Dispatchers.IO) {
-//         repository.getmovie(page)
-//        }
-//    }
-//
-//    val movie:LiveData<MovieList>
-//        get() = repository.movies
-//
-//  fun deletemovie(id:String){
-//      viewModelScope.launch(Dispatchers.IO) {
-//          repository.deletemovie(id)
-//      }
-//  }
-//
-//    fun insertfav(id:String,value:Boolean){
-//        viewModelScope.launch(Dispatchers.IO) {
-//            repository.insertfav(id,value)
-//        }
-//    }
-
     fun addtransaction(transactionz: transaction){
         viewModelScope.launch ( Dispatchers.IO){
             repository.add(transactionz)
+        }
+    }
+
+    fun deleteall(){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteall()
+        }
+    }
+
+    fun delete(transactionzz: transaction){
+        viewModelScope.launch (Dispatchers.IO){
+            repository.delete(transactionzz)
+        }
+    }
+
+    fun update(transactionzz: transaction){
+        viewModelScope.launch (Dispatchers.IO){
+            repository.update(transactionzz)
         }
     }
 

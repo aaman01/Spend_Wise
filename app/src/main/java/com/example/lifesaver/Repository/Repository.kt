@@ -10,4 +10,14 @@ class Repository(
    suspend fun add(transactionz: transaction){
      database.transactiondao().insterall(transactionz)
   }
+    suspend fun deleteall(){
+        database.transactiondao().deleteAll()
+    }
+    suspend fun delete(t: transaction){
+        database.transactiondao().delete(t)
+    }
+
+    suspend fun update(t: transaction){
+        database.transactiondao().update(t)
+    }
 }
