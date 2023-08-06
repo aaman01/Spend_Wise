@@ -9,7 +9,8 @@ data class transaction(
     val id:Int,
     var label:String,
     var amount:Double,
-    var description:String
+    var description:String,
+    var date:String
 ){
 
 }
