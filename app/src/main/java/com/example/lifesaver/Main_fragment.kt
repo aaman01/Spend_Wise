@@ -37,6 +37,9 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 
 class Main_fragment : Fragment() {
@@ -159,11 +162,11 @@ class Main_fragment : Fragment() {
                 a.error=null
             }
         }
-        dialogview.findViewById<TextInputEditText>(R.id.descriptionInput).addTextChangedListener {
-            if (it!!.count()>0){
-                d.error=null
-            }
-        }
+//        dialogview.findViewById<TextInputEditText>(R.id.descriptionInput).addTextChangedListener {
+//            if (it!!.count()>0){
+//                d.error=null
+//            }
+//        }
         dialogview.findViewById<Button>(R.id.addTransactionBtn).setOnClickListener {
             val label=dialogview.findViewById<TextInputEditText>(R.id.labelInput).text.toString()
             val amount=dialogview.findViewById<TextInputEditText>(R.id.amountInput).text.toString().toDoubleOrNull()
@@ -174,16 +177,25 @@ class Main_fragment : Fragment() {
             if (amount==null){
                 a.error="Please enter a valid amount"
             }
-            if (description.isEmpty()){
-                d.error="Please enter a valid description"
-            }
-            if (label.isNotEmpty() && amount!=null && description.isNotEmpty()){
-               t=transaction(0,label,amount,description)
+//            if (description.isEmpty()){
+//                d.error="Please enter a valid description"
+//            }
+            if (label.isNotEmpty() && amount!=null ){
+               val currentdate= getcurrent_Date()
+               t=transaction(0,label,amount,description,currentdate)
              mainViewModel.addtransaction(t)
                 dialog.dismiss()
             }
 
         }
+
+    }
+
+    private fun getcurrent_Date():String {
+
+            val currentDate = Date()
+            val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+            return dateFormat.format(currentDate)
 
     }
 
@@ -227,6 +239,8 @@ class Main_fragment : Fragment() {
         val l=dialogview.findViewById<TextInputEditText>(R.id.labelInput)
         val a=dialogview.findViewById<TextInputEditText>(R.id.amountInput)
         val d=dialogview.findViewById<TextInputEditText>(R.id.descriptionInput)
+        val date=dialogview.findViewById<TextView>(R.id.currentdate)
+        date.text="Transact On:-  "+t[0].date
 
         val editableText: Editable = SpannableStringBuilder(t[0].label)
         l.text=editableText
