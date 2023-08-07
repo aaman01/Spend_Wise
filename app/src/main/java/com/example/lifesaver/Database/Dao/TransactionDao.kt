@@ -25,4 +25,7 @@ interface TransactionDao {
 
     @Query("DELETE FROM transaction_table")
     suspend fun deleteAll()
+
+    @Query("SELECT * from transaction_table WHERE label LIKE '%' || :value || '%'")
+     fun filterdata(value:String):LiveData<List<transaction>>
 }

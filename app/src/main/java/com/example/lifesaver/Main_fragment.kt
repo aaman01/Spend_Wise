@@ -1,6 +1,7 @@
 package com.example.lifesaver
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -19,6 +20,8 @@ import android.widget.PopupWindow
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.Observer
@@ -74,7 +77,20 @@ class Main_fragment : Fragment() {
             }
         })
         binding.searchIcon.setOnClickListener {
-            Toast.makeText(requireContext(),"Coming Soon",Toast.LENGTH_SHORT).show()
+            val destinationFragment = Search_fragment()
+            val transaction = parentFragmentManager.beginTransaction()
+
+
+            transaction.setCustomAnimations(
+                R.anim.slide_in_right, // Animation for entering destination fragment
+                R.anim.slide_out_left, // Animation for exiting source fragment
+                R.anim.slide_in_left,  // Animation for entering source fragment (on back)
+                R.anim.slide_out_right // Animation for exiting destination fragment (on back)
+            )
+
+            transaction.replace(R.id.fragment_container, destinationFragment)
+            transaction.addToBackStack(null)
+            transaction.commit()
         }
      binding.more.setOnClickListener {
         val window=PopupWindow(requireContext())

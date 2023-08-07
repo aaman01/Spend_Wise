@@ -47,6 +47,8 @@ class Transaction_Adapter(
          holder.layout.setOnClickListener {
              shared_viewmodel.id=transact.id
              shared_viewmodel.setBooleanValue(true)
+             shared_viewmodel.setBooleanValue(false)
+
              }
 
 
