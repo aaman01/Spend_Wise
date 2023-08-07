@@ -1,5 +1,7 @@
 package com.example.lifesaver.Repository
 
+import android.util.Log
+import androidx.lifecycle.LiveData
 import com.example.lifesaver.Database.AppDatabase
 import com.example.lifesaver.Database.data.transaction
 
@@ -20,4 +22,5 @@ class Repository(
     suspend fun update(t: transaction){
         database.transactiondao().update(t)
     }
+
 }

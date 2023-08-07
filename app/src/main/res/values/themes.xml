@@ -19,4 +19,8 @@
     <style name="BottomDialogTheme" parent="Theme.Design.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
     </style>
+    <style name="NoUnderlineTextInputEditText" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="boxBackgroundMode">none</item>
+        <item name="backgroundTint">@color/light_blue</item>
+    </style>
 </resources>
