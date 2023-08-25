@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.example.lifesaver.Database.Dao.TransactionDao
 import com.example.lifesaver.Database.data.transaction
 
-@Database(entities = arrayOf(transaction::class), version = 1)
+@Database(entities = arrayOf(transaction::class), version = 2)
  abstract class AppDatabase :RoomDatabase()
 {
       abstract fun transactiondao(): TransactionDao
@@ -24,8 +24,8 @@ import com.example.lifesaver.Database.data.transaction
                 //we use locking
                 synchronized(this){
                     //obj of db created
-                    INSTANCE= Room.databaseBuilder(context.applicationContext,AppDatabase::class.java,
-                        "ExpenseDB").build()
+                    INSTANCE= Room.databaseBuilder(context.applicationContext,AppDatabase::class.java, "ExpenseDB")
+                        .fallbackToDestructiveMigration().build()
                 }
 
             }
